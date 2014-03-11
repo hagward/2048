@@ -68,99 +68,6 @@ function shiftCell(m, x, y, direction) {
     m[y2-yAdd][x2-xAdd] = value;
 }
 
-/*
-function shiftCell(m, x, y, direction) {
-    switch (direction) {
-    	case 0:
-            shiftCellHelper(m, x, y, x-1, y, m[y][x], direction);
-            break;
-    	case 1:
-            shiftCellHelper(m, x, y, x, y-1, m[y][x], direction);
-            break;
-    	case 2:
-            shiftCellHelper(m, x, y, x+1, y, m[y][x], direction);
-            break;
-    	case 3:
-            shiftCellHelper(m, x, y, x, y+1, m[y][x], direction);
-            break;
-    }
-}
-
-function shiftCellHelper(m, lastX, lastY, currX, currY, value, direction) {
-    if (currY < 0 || currY >= m.length || currX < 0 || currX >= m[0].length)
-        return;
-    
-    if (m[currY][currX] !== 0) {
-        if (m[currY][currX] === value)
-            m[currY][currX] *= 2;
-        else
-            m[lastY][lastX] = value;
-    } else {
-        switch (direction) {
-        case 0:
-        	shiftCellHelper(m, lastX-1, lastY, currX-1, currY, value, direction);
-            break;
-        case 1:
-        	shiftCellHelper(m, lastX, lastY-1, currX, currY-1, value, direction);
-            break;
-        case 2:
-        	shiftCellHelper(m, lastX+1, lastY, currX+1, currY, value, direction);
-            break;
-        case 3:
-        	shiftCellHelper(m, lastX, lastY+1, currX, currY+1, value, direction);
-            break;
-        }
-    }
-}
-*/
-
-/*
-function shiftCell(m, x, y, direction) {
-    var value = m[y][x];
-    
-    if (value === 0)
-        return;
-    
-    m[y][x] = 0;
-    
-    switch (direction) {
-    case 0: // left
-    	while (x > 0 && m[y][x-1] === 0) x--;
-        if (m[y][x] === value) m[y][x] *= 2;
-        else if (x === 0) m[y][x] = value;
-        else m[y][x+1] = value;
-        break;
-    case 1: // top
-    	while (y > 0 && m[y-1][x] === 0) y--;
-        if (m[y][x] === value) m[y][x] *= 2;
-        else if (y === 0) m[y][x] = value;
-        else m[y+1][x] = value;
-        break;
-    case 2: // right
-    	while (x < m[0].length - 1 && m[y][x+1] === 0) x++;
-        if (m[y][x] === value) m[y][x] *= 2;
-        else if (x === m[0].length - 1) m[y][x] = value;
-        else m[y][x-1] = value;
-        break;
-    case 3: // down
-        console.log('firstY:', y);
-    	while (y < m.length - 1 && m[y+1][x] === 0) y++;
-        console.log('secondY:', y);
-        if (m[y][x] === value) {
-            m[y][x] *= 2;
-            console.log('first');
-        } else if (y === m.length - 1) {
-            m[y][x] = value;
-            console.log('second');
-        } else {
-            m[y-1][x] = value;
-            console.log('third');
-        }
-        break;
-    }
-}
-*/
-
 function createSquareMatrix(side) {
     var m = [];
     
@@ -260,13 +167,6 @@ var colors = ['aliceblue',
 var m = createSquareMatrix(side);
 var divs = createDivGrid(document.body, side);
 var gameOver = false;
-
-/*var m = [
-    [2, 4, 0, 0],
-	[0, 0, 0, 0],
-	[0, 4, 0, 4],
-	[0, 0, 0, 8]
-];*/
 
 spawnRandomNumberTwo(m);
 updateDivs(m, divs, colors);
