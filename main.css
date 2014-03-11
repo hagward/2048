@@ -19,11 +19,3 @@ body {
 .clear {
     clear: both;
 }
-
-.gameOver {
-    display: block;
-    position: absolute;
-    top: 0;
-    text-align: center;
-    background-color: green;
-}

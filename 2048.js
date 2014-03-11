@@ -142,14 +142,6 @@ function getRandomInt(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function showGameOverScreen(width, msg) {
-    var msgDiv = document.createElement('div');
-    msgDiv.style.width = width;
-    msgDiv.className = 'gameOver';
-    msgDiv.innerHTML = msg;
-    document.body.appendChild(msgDiv);
-}
-
 // ==========================================
 
 var side = 4;
@@ -185,7 +177,7 @@ document.onkeydown = function(event) {
     	shiftGravity(m, event.which - 37);
         if (!spawnRandomNumberTwo(m)) {
             gameOver = true;
-    		showGameOverScreen(150, "GAME OVER :\'(");
+    		alert('GAME OVER :\'(');
         } else {
         	updateDivs(m, divs, colors);
         }
