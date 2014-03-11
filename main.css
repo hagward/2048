@@ -8,7 +8,8 @@ body {
 }
 
 .column {
-    width: 50px;
+    width: 80px;
+    padding: 20px 0;
     float: left;
     display: block;
     margin: 2px;
@@ -17,4 +18,12 @@ body {
 
 .clear {
     clear: both;
+}
+
+.gameOver {
+    display: block;
+    position: absolute;
+    top: 0;
+    text-align: center;
+    background-color: green;
 }

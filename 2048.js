@@ -204,8 +204,7 @@ function updateDivs(m, divs, colors) {
             
             if (m[y][x] > 0) {
                 var color = Math.log(m[y][x]) / Math.log(2);
-                console.log(color, colors[color]);
-                divs[index].style.backgroundColor = colors[color+1];
+                divs[index].style.backgroundColor = colors[color];
             } else {
                 divs[index].style.backgroundColor = colors[0];
             }
@@ -222,25 +221,45 @@ function spawnRandomNumberTwo(m) {
     
     // Game over?
     if (emptySquares.length === 0)
-        return;
+        return false;
     
     var index = getRandomInt(0, emptySquares.length - 1);
     var square = emptySquares[index];
     var x = square[0];
     var y = square[1];
     m[y][x] = 2;
+    return true;
 }
 
 function getRandomInt(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function showGameOverScreen(width, msg) {
+    var msgDiv = document.createElement('div');
+    msgDiv.style.width = width;
+    msgDiv.className = 'gameOver';
+    msgDiv.innerHTML = msg;
+    document.body.appendChild(msgDiv);
+}
+
 // ==========================================
 
 var side = 4;
-var colors = ['red', 'green', 'blue', 'magenta', 'cyan', 'yellow', 'orange', 'gray', 'pink'];
+var colors = ['aliceblue',
+              'antiquewhite',
+              'aquamarine',
+              'lightsalmon',
+              'lightgreen',
+              'darkseagreen',
+              'deeppink',
+              'deepskyblue',
+              'orangered',
+              'gold',
+              'slategray'];
 var m = createSquareMatrix(side);
 var divs = createDivGrid(document.body, side);
+var gameOver = false;
 
 /*var m = [
     [2, 4, 0, 0],
@@ -253,14 +272,23 @@ spawnRandomNumberTwo(m);
 updateDivs(m, divs, colors);
 
 document.onkeydown = function(event) {
+    if (gameOver) {
+        return;
+    }
+    
 	switch (event.which) {
     case 37:
     case 38:
     case 39:
     case 40:
+        event.preventDefault();
     	shiftGravity(m, event.which - 37);
-        spawnRandomNumberTwo(m);
-        updateDivs(m, divs, colors);
+        if (!spawnRandomNumberTwo(m)) {
+            gameOver = true;
+    		showGameOverScreen(150, "GAME OVER :\'(");
+        } else {
+        	updateDivs(m, divs, colors);
+        }
         break;
     }
 };
