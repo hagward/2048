@@ -1,37 +1,63 @@
 // Returns the total yielded score.
 function shiftGravity(m, direction) {
-    var score = 0;
+    var score = 0,
+        moved = false,
+        subScore;
     
     switch (direction) {
     case 0: // left
-        for (var x = 1; x < m[0].length; x++)
-            for (var y = 0; y < m.length; y++)
-                score += shiftCell(m, x, y, 0);
+        for (var x = 1; x < m[0].length; x++) {
+            for (var y = 0; y < m.length; y++) {
+                subScore = shiftCell(m, x, y, 0);
+                if (subScore >= 0) {
+                	score += subScore;
+                    moved = true;
+                }
+            }
+        }
         break;
     case 1: // up
-        for (var y = 1; y < m.length; y++)
-            for (var x = 0; x < m[0].length; x++)
-                score += shiftCell(m, x, y, 1);
+        for (var y = 1; y < m.length; y++) {
+            for (var x = 0; x < m[0].length; x++) {
+                subScore = shiftCell(m, x, y, 1);
+                if (subScore >= 0) {
+                	score += subScore;
+                    moved = true;
+                }
+            }
+        }
         break;
     case 2: // right
-        for (var x = m[0].length - 2; x >= 0; x--)
-            for (var y = 0; y < m.length; y++)
-                score += shiftCell(m, x, y, 2);
+        for (var x = m[0].length - 2; x >= 0; x--) {
+            for (var y = 0; y < m.length; y++) {
+                subScore = shiftCell(m, x, y, 2);
+                if (subScore >= 0) {
+                	score += subScore;
+                    moved = true;
+                }
+            }
+        }
         break;
     case 3: // down
-        for (var y = m.length - 2; y >= 0; y--)
-            for (var x = 0; x < m[0].length; x++)
-                score += shiftCell(m, x, y, 3);
+        for (var y = m.length - 2; y >= 0; y--) {
+            for (var x = 0; x < m[0].length; x++) {
+                subScore = shiftCell(m, x, y, 3);
+                if (subScore >= 0) {
+                	score += subScore;
+                    moved = true;
+                }
+            }
+        }
         break;
     }
     
-    return score;
+    return (moved) ? score : -1;
 }
 
 // Returns the yielded score.
 function shiftCell(m, x, y, direction) {
     if (m[y][x] === 0)
-        return 0;
+        return -1; // TODO: not -1
     
     var value = m[y][x],
         xAdd = 0,
@@ -68,8 +94,15 @@ function shiftCell(m, x, y, direction) {
         y2 += yAdd;
     }
     
+    
+    // TODO: remove
+    if (y2 - yAdd === y && x2 - xAdd === x) {
+        return -1;
+    }
+    
     m[y][x] = 0;
     m[y2-yAdd][x2-xAdd] = value;
+    
     return 0;
 }
 
@@ -148,11 +181,57 @@ function spawnRandomNumberTwo(m) {
     return true;
 }
 
+function canMakeAMove(m) {
+    // Check first row.
+    for (var x = 1; x < m[0].length; x++) {
+        if (m[0][x-1] === 0 || m[0][x] === 0 || m[0][x-1] === m[0][x]) {
+            return true;
+        }
+    }
+    
+    // Check first column.
+    for (var y = 1; y < m.length; y++) {
+        if (m[y][0] === 0 || m[y-1][0] === m[y][0]) {
+            return true;
+        }
+    }
+    
+    // Check the rest.
+    for (var y = 1; y < m.length; y++) {
+        for (var x = 1; x < m[0].length; x++) {
+            if (m[y][x] === 0 || m[y-1][x] === 0 || m[y][x-1] === 0 ||
+                m[y-1][x] === m[y][x] || m[y][x-1] === m[y][x]) {
+                return true;
+            }
+        }
+    }
+    
+    return false;
+}
+
 function getRandomInt(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 // ==========================================
+
+// Returns true if it is possible to move in the specified direction.
+function update(direction) {
+    var subScore = shiftGravity(m, direction);
+    if (subScore === -1) {
+        return false;
+    } else {
+        score += subScore;
+        scoreSpan.innerHTML = score;
+        spawnRandomNumberTwo(m);
+        updateDivs(m, divs, colors);
+        if (!canMakeAMove(m)) {
+            gameOver = true;
+            gameOverDiv.style.visibility = 'visible';
+        }
+        return true;
+    }
+}
 
 var side = 4;
 var colors = ['aliceblue',
@@ -169,6 +248,7 @@ var colors = ['aliceblue',
 var m = createSquareMatrix(side);
 var divs = createDivGrid(document.getElementById('gridDiv'), side);
 var scoreSpan = document.getElementById('scoreSpan');
+var gameOverDiv = document.getElementById('gameOverDiv');
 var score = 0;
 var gameOver = false;
 
@@ -186,14 +266,7 @@ document.onkeydown = function(event) {
     case 39:
     case 40:
         event.preventDefault();
-    	score += shiftGravity(m, event.which - 37);
-        scoreSpan.innerHTML = score;
-        if (!spawnRandomNumberTwo(m)) {
-            gameOver = true;
-    		alert('GAME OVER :\'(');
-        } else {
-        	updateDivs(m, divs, colors);
-        }
+    	update(event.which - 37);
         break;
     }
 };

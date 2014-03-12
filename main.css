@@ -25,3 +25,8 @@ body {
 #gridDiv {
     margin-top: 10px;
 }
+
+#gameOverDiv {
+    color: red;
+    visibility: hidden;
+}
