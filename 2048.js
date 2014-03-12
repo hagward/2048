@@ -1,33 +1,37 @@
+// Returns the total yielded score.
 function shiftGravity(m, direction) {
+    var score = 0;
+    
     switch (direction) {
     case 0: // left
         for (var x = 1; x < m[0].length; x++)
             for (var y = 0; y < m.length; y++)
-                shiftCell(m, x, y, 0);
+                score += shiftCell(m, x, y, 0);
         break;
     case 1: // up
         for (var y = 1; y < m.length; y++)
             for (var x = 0; x < m[0].length; x++)
-                shiftCell(m, x, y, 1);
+                score += shiftCell(m, x, y, 1);
         break;
     case 2: // right
         for (var x = m[0].length - 2; x >= 0; x--)
             for (var y = 0; y < m.length; y++)
-                shiftCell(m, x, y, 2);
+                score += shiftCell(m, x, y, 2);
         break;
     case 3: // down
-        for (var y = m.length - 2; y >= 0; y--) {
-            for (var x = 0; x < m[0].length; x++) {
-                shiftCell(m, x, y, 3);
-            }
-        }
+        for (var y = m.length - 2; y >= 0; y--)
+            for (var x = 0; x < m[0].length; x++)
+                score += shiftCell(m, x, y, 3);
         break;
     }
+    
+    return score;
 }
 
+// Returns the yielded score.
 function shiftCell(m, x, y, direction) {
     if (m[y][x] === 0)
-        return;
+        return 0;
     
     var value = m[y][x],
         xAdd = 0,
@@ -56,7 +60,7 @@ function shiftCell(m, x, y, direction) {
         if (m[y2][x2] === value) {
             m[y2][x2] *= 2;
             m[y][x] = 0;
-            return;
+            return m[y2][x2];
         } else if (m[y2][x2] !== 0) {
             break;
         }
@@ -66,8 +70,10 @@ function shiftCell(m, x, y, direction) {
     
     m[y][x] = 0;
     m[y2-yAdd][x2-xAdd] = value;
+    return 0;
 }
 
+// Creates and returns an integer matrix filled with zeroes.
 function createSquareMatrix(side) {
     var m = [];
     
@@ -81,23 +87,24 @@ function createSquareMatrix(side) {
     return m;
 }
 
+// Creates a grid of divs and returns them in a list.
 function createDivGrid(parent, side) {
     var divList = [];
     
     for (var y = 0; y < side; y++) {
-        var containerDiv = document.createElement('div');
-        containerDiv.className = 'row';
-        parent.appendChild(containerDiv);
+        var rowDiv = document.createElement('div');
+        rowDiv.className = 'row';
+        parent.appendChild(rowDiv);
         for (var x = 0; x < side; x++) {
-            var squareDiv = document.createElement('div');
-            squareDiv.className = 'column';
-            squareDiv.innerHTML = '0';
-            containerDiv.appendChild(squareDiv);
-            divList.push(squareDiv);
+            var colDiv = document.createElement('div');
+            colDiv.className = 'column';
+            colDiv.innerHTML = '0';
+            rowDiv.appendChild(colDiv);
+            divList.push(colDiv);
         }
         var clearDiv = document.createElement('div');
         clearDiv.className = 'clear';
-        containerDiv.appendChild(clearDiv);
+        rowDiv.appendChild(clearDiv);
     }
     
     return divList;
@@ -157,7 +164,9 @@ var colors = ['aliceblue',
               'gold',
               'slategray'];
 var m = createSquareMatrix(side);
-var divs = createDivGrid(document.body, side);
+var divs = createDivGrid(document.getElementById('gridDiv'), side);
+var scoreSpan = document.getElementById('scoreSpan');
+var score = 0;
 var gameOver = false;
 
 spawnRandomNumberTwo(m);
@@ -174,7 +183,8 @@ document.onkeydown = function(event) {
     case 39:
     case 40:
         event.preventDefault();
-    	shiftGravity(m, event.which - 37);
+    	score += shiftGravity(m, event.which - 37);
+        scoreSpan.innerHTML = score;
         if (!spawnRandomNumberTwo(m)) {
             gameOver = true;
     		alert('GAME OVER :\'(');

@@ -1,10 +1,12 @@
 
 body {
     font: 1.5em Segoe UI, Tahoma, sans-serif;
+    text-align: center;
 }
 
 .row {
-    text-align: center;
+    width: 336px;
+    margin: 0 auto;
 }
 
 .column {
@@ -18,4 +20,8 @@ body {
 
 .clear {
     clear: both;
+}
+
+#gridDiv {
+    margin-top: 10px;
 }
