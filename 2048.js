@@ -119,8 +119,11 @@ function updateDivs(m, divs, colors) {
             if (m[y][x] > 0) {
                 var color = Math.log(m[y][x]) / Math.log(2);
                 divs[index].style.backgroundColor = colors[color];
+                divs[index].style.color = 'black';
             } else {
                 divs[index].style.backgroundColor = colors[0];
+                // Ugly solution for making the div look empty.
+                divs[index].style.color = colors[0];
             }
         }
     }
