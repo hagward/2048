@@ -57,7 +57,7 @@ function shiftGravity(m, direction) {
 // Returns the yielded score.
 function shiftCell(m, x, y, direction) {
     if (m[y][x] === 0)
-        return -1; // TODO: not -1
+        return -1;
     
     var value = m[y][x],
         xAdd = 0,
@@ -94,8 +94,7 @@ function shiftCell(m, x, y, direction) {
         y2 += yAdd;
     }
     
-    
-    // TODO: remove
+    // We haven't moved at all.
     if (y2 - yAdd === y && x2 - xAdd === x) {
         return -1;
     }
@@ -152,9 +151,11 @@ function updateDivs(m, divs, colors) {
             if (m[y][x] > 0) {
                 var color = Math.log(m[y][x]) / Math.log(2);
                 divs[index].style.backgroundColor = colors[color];
+                divs[index].style.borderColor = colors[color];
                 divs[index].style.color = 'black';
             } else {
                 divs[index].style.backgroundColor = colors[0];
+                divs[index].style.borderColor = colors[0];
                 // Ugly solution for making the div look empty.
                 divs[index].style.color = colors[0];
             }
