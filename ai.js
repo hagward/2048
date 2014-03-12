@@ -23,6 +23,7 @@ function findMaxEmpty(m, depth) {
         var numEmpty = [];
         for (var i = 0; i < 4; i++) {
             var clone = cloneMatrix(m);
+            spawnRandomNumberTwo(clone);
             if (shiftGravity(clone, i) === -1) {
                 continue;
             }
@@ -53,10 +54,7 @@ function cloneMatrix(m) {
     return clone;
 }
 
-// ==============================
-
-// This AI would benefit from getting to use the same random values for
-// simulation as in the actual game later.
+// ==========================================
 
 function runAi(m, depth, waitTime) {
     if (!gameOver) {

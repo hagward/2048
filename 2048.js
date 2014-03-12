@@ -1,4 +1,5 @@
 // Returns the total yielded score.
+// TODO: better perhaps if it returns a list of which cells were affected?
 function shiftGravity(m, direction) {
     var score = 0,
         moved = false,
@@ -142,27 +143,6 @@ function createDivGrid(parent, side) {
     return divList;
 }
 
-function updateDivs(m, divs, colors) {
-    for (var y = 0; y < m.length; y++) {
-        for (var x = 0; x < m[0].length; x++) {
-            var index = y * m[0].length + x;
-            divs[index].innerHTML = m[y][x];
-            
-            if (m[y][x] > 0) {
-                var color = Math.log(m[y][x]) / Math.log(2);
-                divs[index].style.backgroundColor = colors[color];
-                divs[index].style.borderColor = colors[color];
-                divs[index].style.color = 'black';
-            } else {
-                divs[index].style.backgroundColor = colors[0];
-                divs[index].style.borderColor = colors[0];
-                // Ugly solution for making the div look empty.
-                divs[index].style.color = colors[0];
-            }
-        }
-    }
-}
-
 function spawnRandomNumberTwo(m) {
     var emptySquares = [];
     for (var y = 0; y < m.length; y++)
@@ -170,7 +150,6 @@ function spawnRandomNumberTwo(m) {
             if (m[y][x] === 0)
                 emptySquares.push([x, y]);
     
-    // Game over?
     if (emptySquares.length === 0)
         return false;
     
@@ -214,6 +193,27 @@ function getRandomInt(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+function updateDivs(m, divs, colors) {
+    for (var y = 0; y < m.length; y++) {
+        for (var x = 0; x < m[0].length; x++) {
+            var index = y * m[0].length + x;
+            divs[index].innerHTML = m[y][x];
+            
+            var color;
+            if (m[y][x] > 0) {
+                color = Math.log(m[y][x]) / Math.log(2) % colors.length;
+                divs[index].style.color = 'black';
+            } else {
+                color = 0;
+                // Ugly solution for making the div look empty.
+                divs[index].style.color = colors[color];
+            }
+            divs[index].style.backgroundColor = colors[color];
+            divs[index].style.borderColor = colors[color];
+        }
+    }
+}
+
 // ==========================================
 
 // Returns true if it is possible to move in the specified direction.
@@ -245,7 +245,8 @@ var colors = ['aliceblue',
               'deepskyblue',
               'orangered',
               'gold',
-              'slategray'];
+              'slategray',
+              'steelblue'];
 var m = createSquareMatrix(side);
 var divs = createDivGrid(document.getElementById('gridDiv'), side);
 var scoreSpan = document.getElementById('scoreSpan');
