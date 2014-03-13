@@ -12,8 +12,8 @@ two. When no more moves are possible the game is over.
 
 [Demo](https://dl.dropboxusercontent.com/u/334931/2048/index.html).
 
-To invoke the AI, fire up your favorite browsers developer tools and execute
-the function `runAi(m, depth, waitTime)`. `m` is the matrix representing the
+To invoke the AI, fire up your favorite browsers developer tools and call the
+function `runAi(m, depth, waitTime)`, where `m` is the matrix representing the
 game, `depth` is how many steps the AI should simulate (this should be less
 than ten due to the inefficiency of the AI) and `waitTime` is the time (in ms)
-to wait between moves.
+to wait between moves. For start, try `runAi(m, 6, 50)`.
