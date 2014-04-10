@@ -1,9 +1,10 @@
+// Searches for and returns the best move at a specified depth.
 function findMove(m, depth) {
     var move = 0,
         max = 0;
     for (var i = 0; i < 4; i++) {
         var clone = cloneMatrix(m);
-        if (shiftGravity(clone, i) === -1) {
+        if (moveAllCells(clone, i) === -1) {
             continue;
         }
         var numEmpty = findMaxEmpty(clone, depth);
@@ -15,7 +16,7 @@ function findMove(m, depth) {
     return move;
 }
 
-// Returns the maximum empty squares for a given depth.
+// Returns the maximum number of empty squares for a given depth.
 function findMaxEmpty(m, depth) {
     if (depth == 0) {
         return countEmpty(m);
@@ -23,11 +24,11 @@ function findMaxEmpty(m, depth) {
         var numEmpty = [];
         for (var i = 0; i < 4; i++) {
             var clone = cloneMatrix(m);
-            spawnRandomNumberTwo(clone);
-            if (shiftGravity(clone, i) === -1) {
+            spawnRandomCell(clone);
+            if (moveAllCells(clone, i) === -1) {
                 continue;
             }
-            numEmpty.push(findMaxEmpty(clone, depth-1));
+            numEmpty.push(findMaxEmpty(clone, depth - 1));
         }
         return Math.max.apply(null, numEmpty);
     }
@@ -58,10 +59,11 @@ function cloneMatrix(m) {
 
 function runAi(m, depth, waitTime) {
     if (!gameOver) {
-    	var direction = findMove(m, depth);
+        var direction = findMove(m, depth);
         update(direction);
         setTimeout(function() {
             runAi(m, depth, waitTime)
         }, waitTime);
     }
 }
+
