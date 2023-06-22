@@ -11,7 +11,7 @@ Move all the cells at once by pressing the arrow keys. If two squares of the
 same value collides they will merge into one with the new value being the sum of
 the two. When no more moves are possible the game is over.
 
-[Demo](https://dl.dropboxusercontent.com/u/334931/2048/index.html).
+[Demo](https://hagward.github.io/2048/).
 
 To invoke the AI, fire up your favorite browser's developer tools and call the
 function `runAi(m, depth, waitTime)`, where `m` is the matrix representing the
